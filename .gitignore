@@ -1,0 +1,27 @@
+.vagrant
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
+# test kitchen
+.kitchen/
+.kitchen.local.yml
+
+# Chef
+.zero-knife.rb
+Policyfile.lock.json
+.delivery/
+
+# Amazon
+ec2_keys/
+
+# build specific
+serverbase.tar.gz

@@ -1,0 +1,16 @@
+
+[Unit]
+Description=doorsinfo nodejs
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/node <%= @root_path %>/<%= node['serverbase']['nodeserver']['starter_script'] %>
+Restart=always
+user=nobody
+group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=<%= node['serverbase']['env'] %>
+WorkingDirectory=<%= @root_path %>
+
+[Install]
+WantedBy=multi-user.target

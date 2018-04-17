@@ -1,0 +1,44 @@
+---
+driver:
+  # name: vagrant
+  # network:
+  #   - ["private_network", {ip: "192.168.34.34"}]
+  name: ec2
+  aws_ssh_key_id: <YOUR_SSH_KEY_HERE>
+  region: us-east-1
+  availability_zone: us-east-1a
+  instance_type: t2.micro
+  require_chef_omnibus: true
+  security_group_ids: sg-700a440e
+  #subnet_id: subnet-039c414a
+  associate_public_ip: true
+  interface: dns
+
+provisioner:
+  name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+  #- name: ubuntu-16.04
+  #- name: centos-7.3
+  - name: amazon-2017.09
+    driver:
+      image_id: ami-97785bed
+    transport:
+      username: ec2-user
+      ssh_key: ec2_keys/<YOUR_PEM_KEY_HERE>.pem
+
+suites:
+  - name: default
+    run_list:
+      - recipe[serverbase::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:
