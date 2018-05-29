@@ -8,6 +8,7 @@
 include_recipe 'serverbase::init'
 include_recipe 'serverbase::users'
 include_recipe 'serverbase::structure'
+include_recipe 'serverbase::ssl'
 include_recipe 'serverbase::web'
 include_recipe 'serverbase::nodeserver'
 include_recipe 'serverbase::dbserver'
