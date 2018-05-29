@@ -8,9 +8,14 @@ default['chef']['opsworks']['user'] = 'ec2-user'
 default['serverbase']['swap']['size'] = 1024
 
 default['serverbase']['web']['site_name'] = 'doorsinfo' # OVERRIDE ME
+default['serverbase']['web']['domain'] = 'doorsinfo.com' # OVERRIDE ME
 # default['serverbase']['web']['yourfullyqualifieddomainname'] = 'localhost'
 # default['serverbase']['web']['yourdomain'] = 'localhost'
 # default['serverbase']['web']['nginxlogpath'] = "/var/log/nginx/#{['serverbase']['web']['site_name']}.log"
+default['serverbase']['web']['ssl_cert_path'] = '/etc/ssl/www_doorsinfo_com.crt' # OVERRIDE ME
+default['serverbase']['web']['ssl_cert_key_path'] = '/etc/ssl/doorsinfo.com.key' # OVERRIDE ME
+default['serverbase']['web']['ssl_CA_path'] = '/etc/ssl/AddTrust_External_CA_Root.crt' # OVERRIDE ME
+default['serverbase']['web']['ssl_combined_cert_path'] = '/etc/ssl/doorsinfo_CA_combined.crt' # OVERRIDE ME
 
 default['serverbase']['nodeserver']['node_domain'] = '127.0.0.1:3000'
 default['serverbase']['nodeserver']['url'] = 'http://127.0.0.1:3000'
@@ -42,7 +47,7 @@ node.default['nodejs']['version'] = node['serverbase']['node_version'] #'8.9.4' 
 node.default['nodejs']['binary']['checksum'] = node['serverbase']['node_checksum'] #'21fb4690e349f82d708ae766def01d7fec1b085ce1f5ab30d9bda8ee126ca8fc'
 
 # mongodb configuration
-default['mongodb']['package_version'] = '3.6.3' #'version-release' # OVERRIDE ME
+node.default['mongodb']['package_version'] = '3.6.3' #'version-release' # OVERRIDE ME
 #default['mongodb']['config']['mongod']['systemLog']['path'] = '/var/lib/mongodb/log/mongodb.log'
 #default['mongodb']['config']['mongod']['systemLog']['verbosity'] = '0'
 #default['mongodb']['config']['mongod']['systemLog']['destination'] = 'file'
