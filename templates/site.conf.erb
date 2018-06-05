@@ -6,9 +6,13 @@ upstream app_<%= node[:hostname] %> {
 }
 
 # the nginx server instance
-server {
+ server {
     listen <%= node[:nginx][:port] %>;
-    server_name <%= node[:hostname] %>;
+    listen 443 ssl;
+    ssl_certificate <%= node[:serverbase][:web][:ssl_cert_path] %>;
+    ssl_certificate_key <%= node[:serverbase][:web][:ssl_combined_cert_path] %>;
+
+    server_name <%= node[:serverbase][:web][:domain] %>;
     access_log <%= node[:nginx][:log_dir] %>/localhost.access.log;
 
     # pass the request to the node.js server with the correct headers
