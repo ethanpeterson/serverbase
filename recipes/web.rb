@@ -18,7 +18,11 @@ temp_path = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase'
 nginx_site node['serverbase']['web']['site_name'] do
   template 'site.conf.erb'
   variables(
-    temp_path: temp_path
+    temp_path: temp_path,
+    ssl_cert_path: node[:serverbase][:web][:ssl_combined_cert_path],
+    ssl_cert_key_path: node[:serverbase][:web][:ssl_cert_key_path],
+    ssl_dhparam: node[:serverbase][:web][:ssl_dhparam_path],
+    ssl_cert_trust_chain_path: node[:serverbase][:web][:ssl_cert_trust_chain_path]
   )
   name node['serverbase']['web']['site_name']
   action :enable

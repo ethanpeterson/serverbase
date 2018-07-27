@@ -1,5 +1,5 @@
 
-# the IP(s) on which your node server is running. I chose port 3000.
+# the IP(s) on which your node server is running
 upstream app_<%= node[:hostname] %> {
     server <%= node[:serverbase][:nodeserver][:node_domain] %>;
     keepalive 8;
@@ -8,9 +8,38 @@ upstream app_<%= node[:hostname] %> {
 # the nginx server instance
  server {
     listen <%= node[:nginx][:port] %>;
+    <% if ::File.exist?(@ssl_cert_path) %>
     listen 443 ssl;
-    ssl_certificate <%= node[:serverbase][:web][:ssl_cert_path] %>;
-    ssl_certificate_key <%= node[:serverbase][:web][:ssl_combined_cert_path] %>;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Requires nginx >= 1.13.0 else use TLSv1.2
+    ssl_prefer_server_ciphers on; 
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
+    <% if ::File.exist?(@ssl_dhparam) %>
+    ssl_dhparam <%= @ssl_dhparam %>; # self generated DH params
+    <% end %>
+    ssl_ecdh_curve secp384r1;
+    # Optimize session cache
+    ssl_session_timeout  10m;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off; # Requires nginx >= 1.5.9 ## turning on would invalidate Perfect Forward Secrecy
+    ssl_certificate <%= @ssl_cert_path %>;
+    ssl_certificate_key <%= @ssl_cert_key_path %>;
+    <% if ::File.exists?(@ssl_cert_trust_chain_path) %>
+    # Enable OCSP stapling
+    # only valid on nginx >=1.3.7
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_trusted_certificate <%= @ssl_cert_trust_chain_path %>;
+    <% end %>
+    <% if ::File.exist?(@ssl_cert_path) %>
+    # Enable HSTS
+    add_header Strict-Transport-Security "max-age:15552000" always; # 180 days
+    <% end %>
+    <% end %>
+    add_header X-Frame-Options DENY;  # https://cipherli.st
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Referrer-Policy origin-when-cross-origin;  # http://scotthelm.co.uk/a-new-security-header-referrer-policy/
+    add_header Content-Security-Policy "<%= node[:serverbase][:web][:csp] %>";
 
     server_name <%= node[:serverbase][:web][:domain] %>;
     access_log <%= node[:nginx][:log_dir] %>/localhost.access.log;

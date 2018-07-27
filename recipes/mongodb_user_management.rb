@@ -17,11 +17,21 @@ node.override['mongodb']['users'] = [
             "username": node['serverbase']['mongoserver']['admin_name'],
             "password": app['environment']['MONGODB_ADMIN_PASSWORD'],
             "roles": [
+                "dbOwner",
                 "root",
                 "userAdminAnyDatabase",
                 "dbAdminAnyDatabase"
             ],
             "database": node['serverbase']['mongoserver']['primary_database']
+        },
+        {
+            "username": node['serverbase']['mongoserver']['admin_name'],
+            "password": app['environment']['MONGODB_ADMIN_PASSWORD'],
+            "roles": [
+                "read",
+                "userAdmin"
+            ],
+            "database": node['serverbase']['mongoserver']['secondary_database']
         },
         {
             "username": node['serverbase']['mongoserver']['account_name'],

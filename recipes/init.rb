@@ -15,5 +15,5 @@ apt_update 'daily' do
 end
   
 execute 'yum_update' do
-    command 'yum update -y'
+    command 'yum update -y -x mongodb\* -x nginx\*'
 end
