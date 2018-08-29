@@ -1,8 +1,8 @@
 #
 # Cookbook:: serverbase
 # Recipe:: web
-#
-# Copyright:: 2017, The Authors, All Rights Reserved.
+# Description:: sets up the nginx server/service
+# Copyright:: 2018 All Rights Reserved.
 
 # reference the nginx recipe
 include_recipe 'nginx'
@@ -27,13 +27,6 @@ nginx_site node['serverbase']['web']['site_name'] do
   name node['serverbase']['web']['site_name']
   action :enable
   notifies :restart, 'service[nginx]'
-end
-
-# add the necessary users to the nginx group
-group "nginx" do
-  action :modify
-  append true
-  members [ node['chef']['opsworks']['user'] ]
 end
 
 # start nginx service

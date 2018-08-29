@@ -1,8 +1,8 @@
 #
 # Cookbook:: serverbase
 # Recipe:: structure
-#
-# Copyright:: 2017, The Authors, All Rights Reserved.
+# Description:: creates the basic directory structure for the nginx & node.js services
+# Copyright:: 2018 All Rights Reserved.
 
 root_path = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase']['web']['site_name']}"
 

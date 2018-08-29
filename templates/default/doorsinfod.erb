@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="<%= @root_path %>"
-cmd="NODE_ENV=<%= @node_env %> <%= @node_path %> <%= node['serverbase']['nodeserver']['starter_script'] %>"
+cmd="NODE_ENV=<%= @node_env %> <%= @node_path %>/node <%= node['serverbase']['nodeserver']['starter_script'] %>"
 user="<%= node['chef']['opsworks']['user']%>"
 
 name=`basename $0`

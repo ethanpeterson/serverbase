@@ -7,6 +7,7 @@ upstream app_<%= node[:hostname] %> {
 
 # the nginx server instance
  server {
+    server_tokens off;  # strips off server version in header
     listen <%= node[:nginx][:port] %>;
     <% if ::File.exist?(@ssl_cert_path) %>
     listen 443 ssl;

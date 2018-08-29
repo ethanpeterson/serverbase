@@ -1,8 +1,8 @@
 #
 # Cookbook:: serverbase
 # Recipe:: ssl
-#
-# Copyright:: 2017, The Authors, All Rights Reserved.
+# Description:: creates the ssl files/paths necessary for securing nginx
+# Copyright:: 2018 All Rights Reserved.
 
 Chef::Log.info("************************************************************")
 

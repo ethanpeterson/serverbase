@@ -1,8 +1,8 @@
 #
 # Cookbook:: serverbase
 # Recipe:: services
-#
-# Copyright:: 2017, The Authors, All Rights Reserved.
+# Description:: creates the nodejs service daemon
+# Copyright:: 2018 All Rights Reserved.
 
 # get AWS OpsWorks databag
 app = search(:aws_opsworks_app).first
@@ -17,12 +17,12 @@ template_name = ::File.join(node['serverbase']['nodeserver']['service_path'], no
 template_source = node['serverbase']['nodeserver']['service_name']
 root_path = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase']['web']['site_name']}"
 
-# systemd service configuration for nodeJs app
+# systemd (init.d) service configuration for nodeJS app
 template template_name do
   source "#{template_source}.erb"
   variables(
       node_env: app['environment']['NODE_ENV'], 
-      node_path: node['serverbase']['nodeserver']['node_path'] % { version: node['serverbase']['node_version'] },
+      node_path: node['serverbase']['nodeserver']['node_path'] % { version: node['serverbase']['nodeserver']['version'] },
       root_path: root_path
   )
   mode 755
@@ -30,8 +30,8 @@ end
 
 # restart the nginx service
 service "#{template_source}" do
-  action :restart
-  notifies :restart, 'service[nginx]'
+  action [ :enable, :start ]
+  notifies :restart, 'service[nginx]', :delayed
 end
 
 ## Reload systemctl for RHEL 7+ after modifying the init file.
