@@ -37,7 +37,7 @@ default['serverbase']['nodeserver']['web_root'] = '/srv/www'
 # default['serverbase']['nodeserver']['log_path'] = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase']['web']['site_name']}/logs/"
 default['serverbase']['nodeserver']['temp_path'] = "temp" # i.e. '/srv/www/temp'
 default['serverbase']['nodeserver']['starter_script'] = 'server.js' # OR 'app.js'
-default['serverbase']['nodeserver']['service_path'] = '/etc/init.d/' # OR '/etc/systemd/system/'
+default['serverbase']['nodeserver']['service_path'] = '/etc/rc.d/init.d/' # OR '/etc/systemd/system/'
 default['serverbase']['nodeserver']['node_path'] = "/usr/local/src/nvm/versions/node/v%{version}/bin"
 
 # mongoDb settings
