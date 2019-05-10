@@ -33,13 +33,16 @@ upstream app_<%= node[:hostname] %> {
     <% end %>
     <% if ::File.exist?(@ssl_cert_path) %>
     # Enable HSTS
-    add_header Strict-Transport-Security "max-age:15552000" always; # 180 days
+    add_header Strict-Transport-Security "max-age=15552000" always; # 180 days
     <% end %>
     <% end %>
     add_header X-Frame-Options DENY;  # https://cipherli.st
+    add_header X-Download-Options noopen;
+    add_header X-DNS-Prefetch-Control off;
     add_header X-Content-Type-Options nosniff;
     add_header X-XSS-Protection "1; mode=block";
-    add_header Referrer-Policy origin-when-cross-origin;  # http://scotthelm.co.uk/a-new-security-header-referrer-policy/
+    add_header Feature-Policy "fullscreen 'self'; sync-xhr 'self'";
+    add_header Referrer-Policy strict-origin-when-cross-origin;  # http://scotthelm.co.uk/a-new-security-header-referrer-policy/
     add_header Content-Security-Policy "<%= node[:serverbase][:web][:csp] %>";
 
     server_name <%= node[:serverbase][:web][:domain] %>;
