@@ -4,11 +4,13 @@
 # Description:: creates the basic directory structure for the nginx & node.js services
 # Copyright:: 2018 All Rights Reserved.
 
+# frozen_string_literal: true
+
 root_path = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase']['web']['site_name']}"
 
 # Create the nodejs root directory.
 directory root_path do
-  action :create    #default
+  action :create # default
   recursive true
   group node['nginx']['group']
 end

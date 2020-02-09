@@ -1,0 +1,27 @@
+inherit_from: .rubocop_todo.yml
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/custom_matchers/*'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'spec/custom_matchers/*'
+
+# https://www.rubydoc.info/github/bbatsov/RuboCop/RuboCop/Cop/Style/FormatStringToken
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/GuardClause:
+  Exclude:
+    - 'spec/custom_matchers/*'
+
+Style/CaseEquality:
+  Exclude:
+    - 'spec/custom_matchers/*'

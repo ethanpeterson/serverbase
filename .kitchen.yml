@@ -4,7 +4,7 @@ driver:
   # network:
   #   - ["private_network", {ip: "192.168.34.34"}]
   name: ec2
-  aws_ssh_key_id: <YOUR_SSH_KEY_HERE>
+  aws_ssh_key_id: <YOUR_EC2_SSH_KEY_PAIR_NAME_HERE>
   region: us-east-1
   availability_zone: us-east-1a
   instance_type: t2.micro
@@ -32,7 +32,7 @@ platforms:
       image_id: ami-97785bed
     transport:
       username: ec2-user
-      ssh_key: ec2_keys/<YOUR_PEM_KEY_HERE>.pem
+      ssh_key: ec2_keys/<PATH_TO_PEM_KEY_HERE>.pem
 
 suites:
   - name: default

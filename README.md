@@ -2,6 +2,10 @@
 
 Installs & configures serverbase, a MERN instance, which consists of an nginx front end backed by node.js and mongoDb on one instance. The intended target of this cookbook is for AWS on Amazon Linux.
 
+## Build
+
+Example optional build process using Berkshelf - :$ berks package serverbase.tar.gz
+
 ## Usage
 
 Recipes in this cookbook are broken down into setup and configure components. While they can be organized how you'd like the recommended order is below:
@@ -24,7 +28,7 @@ include_recepie 'serverbase::shutdown'
 
 ## Tested On
 
-Tested on Amazon Linux 2017.09 instance
+Tested on Amazon Linux 2018.03 instance
 
 ## Author
 

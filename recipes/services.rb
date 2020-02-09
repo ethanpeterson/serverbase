@@ -4,6 +4,8 @@
 # Description:: creates the nodejs service daemon
 # Copyright:: 2018 All Rights Reserved.
 
+# frozen_string_literal: true
+
 # get AWS OpsWorks databag
 app = search(:aws_opsworks_app).first
 
@@ -18,19 +20,20 @@ template_source = node['serverbase']['nodeserver']['service_name']
 root_path = "#{node['serverbase']['nodeserver']['web_root']}/#{node['serverbase']['web']['site_name']}"
 
 # systemd (init.d) service configuration for nodeJS app
-template template_name do
+template template_name.to_s do
   source "#{template_source}.erb"
   variables(
-      node_env: app['environment']['NODE_ENV'], 
-      node_path: node['serverbase']['nodeserver']['node_path'] % { version: node['serverbase']['nodeserver']['version'] },
-      root_path: root_path
+    node_env: app['environment']['NODE_ENV'],
+    node_path: format(node['serverbase']['nodeserver']['node_path'], version: node['serverbase']['nodeserver']['version']),
+    root_path: root_path
   )
-  mode 755
+  mode '755'
 end
 
 # restart the nginx service
-service "#{template_source}" do
-  action [ :enable, :start ]
+# service "#{template_source}" do
+service template_source.to_s do
+  action %i[enable start]
   notifies :restart, 'service[nginx]', :delayed
 end
 
@@ -69,7 +72,6 @@ end
 ## end
 
 ## execute "#{template_source} restart" do
-##   notifies :stop, "service[#{template_source}]", :immediately  
+##   notifies :stop, "service[#{template_source}]", :immediately
 ##   notifies :start, "service[#{template_source}]"
 ## end
-

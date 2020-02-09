@@ -1,14 +1,14 @@
 
 # the IP(s) on which your node server is running
-upstream app_<%= node[:hostname] %> {
-    server <%= node[:serverbase][:nodeserver][:node_domain] %>;
+upstream app_<%= node['hostname'] %> {
+    server <%= node['serverbase']['nodeserver']['node_domain'] %>;
     keepalive 8;
 }
 
 # the nginx server instance
  server {
     server_tokens off;  # strips off server version in header
-    listen <%= node[:nginx][:port] %>;
+    listen <%= node['nginx']['port'] %>;
     <% if ::File.exist?(@ssl_cert_path) %>
     listen 443 ssl;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Requires nginx >= 1.13.0 else use TLSv1.2
@@ -43,26 +43,28 @@ upstream app_<%= node[:hostname] %> {
     add_header X-XSS-Protection "1; mode=block";
     add_header Feature-Policy "fullscreen 'self'; sync-xhr 'self'";
     add_header Referrer-Policy strict-origin-when-cross-origin;  # http://scotthelm.co.uk/a-new-security-header-referrer-policy/
-    add_header Content-Security-Policy "<%= node[:serverbase][:web][:csp] %>";
+    add_header Content-Security-Policy "<%= node['serverbase']['web']['csp'] %>";
 
-    server_name <%= node[:serverbase][:web][:domain] %>;
-    access_log <%= node[:nginx][:log_dir] %>/localhost.access.log;
+    server_name <%= node['serverbase']['web']['domain'] %>;
+    access_log <%= node['nginx']['log_dir'] %>/localhost.access.log;
 
     # pass the request to the node.js server with the correct headers
     # and much more can be added, see nginx config options
     location / {
+      client_max_body_size <%= node['serverbase']['web']['maxbodysize'] %>; # Limit the body size for incoming requests to this route
       client_body_temp_path <%= @temp_path %> 1 2;  # http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_temp_path
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
+      proxy_set_header Host $host;
       proxy_set_header X-NginX-Proxy true;
+      proxy_set_header X-Forwarded-Proto $scheme;
 
       # required to allow the full request to pass from nginx to node
       proxy_buffers 8 1024k;    # help found at: http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffers
       proxy_buffer_size 1024k;
       #proxy_buffering off; # alternatively we can turn it off; not sure of the long term effects???
 
-      proxy_pass <%= node[:serverbase][:nodeserver][:url] %>;
+      proxy_pass <%= node['serverbase']['nodeserver']['url'] %>;
       proxy_redirect off;
     }
  }

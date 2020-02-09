@@ -1,10 +1,11 @@
 name 'serverbase'
 maintainer 'Ethan Peterson'
-maintainer_email 'you@example.com'
+maintainer_email 'ethan@foureleventech.com'
 license 'Apache-2.0'
 description 'Installs & configures serverbase - a MERN environment'
 long_description 'Installs & configures serverbase, which consists of an nginx front end backed by node.js and mongoDb on one instance'
-version '0.1.5'
+version '0.1.7'
+supports 'amazon'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 
 issues_url 'https://github.com/ethanpeterson/serverbase/issues'
